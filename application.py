@@ -80,6 +80,11 @@ def save_request(data):
 
         return 'ok'
 
+def check_message_processed(message_id):
+    processed = IncomingRequest.query.filter_by(message_id=message_id, processed=True).first()
+    return True if processed else False
+
+
 
 
 @application.before_request
@@ -136,16 +141,26 @@ def heyoo():
             if message_type == "text":
 
                 message = messenger.get_message(data).lower()
+                message_id = data['entry'][0]['changes'][0]['value']['statuses'][0]['id'] #wamid.HBgMMjU0NzQxNTkwMzMwFQIAERgSMTZCMjIzOTlEMjVFQTE2MjUyAA==
 
-                print(f"{mobile} sent {message}")
+                if not check_message_processed(message_id):
+                    print(f"{mobile} sent {message}")
+                    try:
+                        if "at" in message:
+                            messenger.send_message(f"Hi {name} what service would you like today?\n\n1 - Open account\n\n💡type *1* to make your selection 👇🏾", mobile)
 
-                # logging.info(f"Message; {message_id}: {message}")
+                            #Mark the message as processed
+                            new_ = IncomingRequest(status='deliiverd', timestamp='', recipient_id='', conversation_id='', message_id=message_id, origin='', billable='', pricing_model='', processed=True)
+                            db.session.add(new_)
+                            db.session.commit()
 
-                try:
-                    messenger.send_message(f"Hi {name} what service would you like today?\n\n1 - Open account\n\n💡type *1 - 2* to make your selection below 👇🏾", mobile)
-                
-                except Exception as e:
-                    logger.exception(e)
+                            print('ookkkkk')
+                        else:
+                            print('not ok')
+                    except Exception as e:
+                        logger.exception(e)
+                else:
+                    print(f"{mobile} sent {message} but it's already processed.")
                     
 
             elif message_type == "interactive":
