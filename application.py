@@ -9,11 +9,12 @@ from datetime import datetime
 
 application = Flask(__name__)
 
-Token = 'EAAM6OPcHa5EBAI83LbrxNJIyCkDKk4AcWugskicB4ifKwXhMT5KXnPxdzq621DYQ1GERmCHQ8ro1iOA5oSVpx6KjeMROxywwWEEcYSNxMfRqsQmMr15DxwTHWcRYBkqZA1TLNZCZB4VR6YnJpABLfkDitEIuHXUaR4KUyMtHd14Uk00NhdUiiNmEP6eLOLZCuRuqCn8c7Oifuq4nQxaz'
+Token = 'EAAMJ83gJl0cBAEHFSqmDPfm43EwIlnJYHrA7hC4VQNrCJjIPhdxg3atSPlrseGnB5kUp8IUzvkawX7sv2J9t6TKaJjd9xXKfHb7cGu6GPT6YM1zNxGQe75WHAN9T9JrKcqSJAeH282cWJ8MjAilGAZAeQxuPu7GJIKZBcCQXcTHq2fGUDFZCr6a2DVab5Mk1jJfRi0eexbUZBwqbr5I0N2GIZAAIcTSAZD'
 
-messenger = WhatsApp(Token, phone_number_id='105441719125872')
+messenger = WhatsApp(Token, phone_number_id='102212482786354')
 
-VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
+VERIFY_TOKEN = "1234"
+
 
 application.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///conversations.db"
 
@@ -138,7 +139,8 @@ def heyoo():
 
             mobile = messenger.get_mobile(data)
             message_type = messenger.get_message_type(data)
-            name = messenger.get_name(data)
+            name1 = messenger.get_name(data)
+            name=name1.capitalize()
 
          
             if message_type == "text":
