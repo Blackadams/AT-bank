@@ -50,8 +50,10 @@ class IncomingRequest(db.Model):
 
 def save_request(data):
 
+
         # Extract the conversation_id and message_id from the data
         conversation_id = data['entry'][0]['changes'][0]['value']['statuses'][0]['conversation']['id'] #c1b63a1655a036852a22a89da7fb908a
+        # message_id = messenger.get_message_id(data)
         message_id = data['entry'][0]['changes'][0]['value']['statuses'][0]['id'] #wamid.HBgMMjU0NzQxNTkwMzMwFQIAERgSMTZCMjIzOTlEMjVFQTE2MjUyAA==
         
         
@@ -125,6 +127,7 @@ def heyoo():
 
     data = request.get_json()
 
+
     changed_field = messenger.changed_field(data)
    
     if changed_field == 'messages':
@@ -141,22 +144,40 @@ def heyoo():
             if message_type == "text":
 
                 message = messenger.get_message(data).lower()
-                message_id = data['entry'][0]['changes'][0]['value']['statuses'][0]['id'] #wamid.HBgMMjU0NzQxNTkwMzMwFQIAERgSMTZCMjIzOTlEMjVFQTE2MjUyAA==
 
-                if not check_message_processed(message_id):
+                print(f"{mobile} sent {message}")
+
+
+                message_id = messenger.get_message_id(data)
+
+                true_id = f'{message_id}=='
+              
+
+
+                # try:
+
+                #     messenger.send_message(f"Hi {name} what service would you like today?\n\n1 - Open account\n\n💡type *1* to make your selection 👇🏾", mobile)
+                # except Exception as e:
+                #     logger.exception(e)
+
+
+
+                if not check_message_processed(true_id):
                     print(f"{mobile} sent {message}")
                     try:
-                        if "at" in message:
+                        if "test" in message:
+                        
                             messenger.send_message(f"Hi {name} what service would you like today?\n\n1 - Open account\n\n💡type *1* to make your selection 👇🏾", mobile)
 
                             #Mark the message as processed
-                            new_ = IncomingRequest(status='deliiverd', timestamp='', recipient_id='', conversation_id='', message_id=message_id, origin='', billable='', pricing_model='', processed=True)
-                            db.session.add(new_)
+                            processed_message = IncomingRequest.query.filter_by(message_id=message_id,  processed=False).first()
+                            processed_message.processed = True
                             db.session.commit()
 
                             print('ookkkkk')
                         else:
-                            print('not ok')
+                            print('duplicate')
+                       
                     except Exception as e:
                         logger.exception(e)
                 else:
