@@ -9,9 +9,9 @@ from datetime import datetime
 
 application = Flask(__name__)
 
-Token = 'EABXwLvbonGMBADwOKa594mA2vpQMgCKTNw31w9GZAKZCEQWU5TF5jPjFOkHnszd7uxHks8pOJuoSoSbTZCa36jBrTTtkK2oW0AUjB9TrIwiKa6usME23PnMLGgKM9xgZB9gPUgPceanpWVeh8L5DT604XASFGgDKiRx60ZBodSw2SH7ZCq9yzfROHurlpXZA4j4KZBPekawvfoTC2liOfOLj'
+Token = 'EAAM6OPcHa5EBAI83LbrxNJIyCkDKk4AcWugskicB4ifKwXhMT5KXnPxdzq621DYQ1GERmCHQ8ro1iOA5oSVpx6KjeMROxywwWEEcYSNxMfRqsQmMr15DxwTHWcRYBkqZA1TLNZCZB4VR6YnJpABLfkDitEIuHXUaR4KUyMtHd14Uk00NhdUiiNmEP6eLOLZCuRuqCn8c7Oifuq4nQxaz'
 
-messenger = WhatsApp(Token, phone_number_id='106592595452225')
+messenger = WhatsApp(Token, phone_number_id='105441719125872')
 
 VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
 
@@ -160,14 +160,12 @@ def heyoo():
                 # except Exception as e:
                 #     logger.exception(e)
 
+                if "test" in message:
 
-
-                if not check_message_processed(true_id):
-                    print(f"{mobile} sent {message}")
-                    try:
-                        if "test" in message:
-                        
-                            messenger.send_message(f"Hi {name} what service would you like today?\n\n1 - Open account\n\n💡type *1* to make your selection 👇🏾", mobile)
+                    if not check_message_processed(true_id):
+                        print(f"{mobile} sent {message}")
+                        try:
+                            messenger.send_message(f"Hi *{name}* what service would you like today?\n\n1 - *Top-up account*\n2 - *Check Balance*\n3 - *Top-up airtime*\n4 - *About Us*\n\n💡type *1 - 4* to make your selection below 👇🏾", mobile)
 
                             #Mark the message as processed
                             processed_message = IncomingRequest.query.filter_by(message_id=message_id,  processed=False).first()
@@ -175,13 +173,98 @@ def heyoo():
                             db.session.commit()
 
                             print('ookkkkk')
-                        else:
-                            print('duplicate')
-                       
-                    except Exception as e:
-                        logger.exception(e)
+                           
+                        except Exception as e:
+                            logger.exception(e)
+                    else:
+                        print(f"{mobile} sent {message} but it's already processed.")
+
+                elif "1" in message:
+
+                    if not check_message_processed(true_id):
+                        print(f"{mobile} sent {message}")
+                        try:
+                            messenger.send_message(f"Hi *{name}* Top-up successful 👍", mobile)
+
+                            #Mark the message as processed
+                            processed_message = IncomingRequest.query.filter_by(message_id=message_id,  processed=False).first()
+                            processed_message.processed = True
+                            db.session.commit()
+
+                            print('ookkkkk')
+                           
+                        except Exception as e:
+                            logger.exception(e)
+                    else:
+                        print(f"{mobile} sent {message} but it's already processed.")
+                    print('duplicate')
+
+                elif "2" in message:
+
+                    if not check_message_processed(true_id):
+                        print(f"{mobile} sent {message}")
+                        try:
+                            messenger.send_message(f"Bankify allows customers to save money in their accounts, which is then used to purchase airtime and resell it. The interest earned from this process is shared with the customer's savings account, providing a unique and convenient way for individuals to manage their finances. 👍", mobile)
+
+                            #Mark the message as processed
+                            processed_message = IncomingRequest.query.filter_by(message_id=message_id,  processed=False).first()
+                            processed_message.processed = True
+                            db.session.commit()
+
+                            print('ookkkkk')
+                           
+                        except Exception as e:
+                            logger.exception(e)
+                    else:
+                        print(f"{mobile} sent {message} but it's already processed.")
+                    print('duplicate')
+
+                elif "3" in message:
+
+                    if not check_message_processed(true_id):
+                        print(f"{mobile} sent {message}")
+                        try:
+                            messenger.send_message(f"Bankify allows customers to save money in their accounts, which is then used to purchase airtime and resell it. The interest earned from this process is shared with the customer's savings account, providing a unique and convenient way for individuals to manage their finances. 👍", mobile)
+
+                            #Mark the message as processed
+                            processed_message = IncomingRequest.query.filter_by(message_id=message_id,  processed=False).first()
+                            processed_message.processed = True
+                            db.session.commit()
+
+                            print('ookkkkk')
+                           
+                        except Exception as e:
+                            logger.exception(e)
+                    else:
+                        print(f"{mobile} sent {message} but it's already processed.")
+                    print('duplicate')
+
+                elif "4" in message:
+
+                    if not check_message_processed(true_id):
+                        print(f"{mobile} sent {message}")
+                        try:
+                            messenger.send_message(f"*About Us*\n\n*Welcome to Bankify, where we specialize in creating innovative solutions using Africa's Talking Airtime API. One of our flagship products is a savings wallet chatbot that allows customers to save money in their accounts, which is then used to purchase airtime and resell it. The interest earned from this process is shared with the customer's savings account, providing a unique and convenient way for individuals to manage their finances.*", mobile)
+
+                            #Mark the message as processed
+                            processed_message = IncomingRequest.query.filter_by(message_id=message_id,  processed=False).first()
+                            processed_message.processed = True
+                            db.session.commit()
+
+                            print('ookkkkk')
+                           
+                        except Exception as e:
+                            logger.exception(e)
+                    else:
+                        print(f"{mobile} sent {message} but it's already processed.")
+                    print('duplicate')
+
                 else:
-                    print(f"{mobile} sent {message} but it's already processed.")
+                    print('duplicate')
+
+
+
+
                     
 
             elif message_type == "interactive":
